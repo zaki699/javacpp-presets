@@ -23,9 +23,10 @@ runs:
           echo Removing old SDKs without ARM support
           sudo rm -Rf /Library/Developer/CommandLineTools/SDKs/MacOSX10*
         fi
+        
 
         brew uninstall --force --ignore-dependencies gcc gcc@7 gcc@8 gcc@9 gcc@10 gcc@11 gcc@12 gcc@13 little-cms2 maven openblas r
-        brew install boost ccache swig autoconf-archive automake cmake libomp libtool libusb ant nasm xz pkg-config sdl2 gpg1 bison flex perl ragel binutils gradle gmp isl libmpc mpfr geoip pcre ssdeep yajl
+        brew install boost ccache ninja swig autoconf-archive automake cmake libomp libtool libusb ant nasm xz pkg-config sdl2 gpg1 bison flex perl ragel binutils gradle gmp isl libmpc mpfr geoip pcre ssdeep yajl
         brew link --force libomp
 
         # echo Installing an older less buggy version of CMake
@@ -112,6 +113,7 @@ runs:
         clang --version
         /usr/local/bin/gcc-* --version || true
         cmake --version
+        ninja --version
         gradle --version
         mvn -version
         gpg --version
