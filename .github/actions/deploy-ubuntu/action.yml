@@ -21,13 +21,13 @@ runs:
         $SUDO rm -rf /usr/share/dotnet
 
         # Allocate a swapfile on Linux as it's not enabled by default. Needed for pytorch and mkl.
-        $SUDO fallocate -l 4GB /swapfile
+        $SUDO fallocate -l 12GB /swapfile
         $SUDO chmod 600 /swapfile
         $SUDO mkswap /swapfile
         $SUDO swapon /swapfile
 
         mkdir -p .ccache
-        echo "max_size = 2.0G"                                                                        > .ccache/ccache.conf
+        echo "max_size = 4.0G"                                                                        > .ccache/ccache.conf
         echo "hash_dir = false"                                                                      >> .ccache/ccache.conf
         echo "sloppiness = file_macro,include_file_ctime,include_file_mtime,pch_defines,time_macros" >> .ccache/ccache.conf
 
