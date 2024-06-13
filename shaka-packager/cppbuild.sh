@@ -34,7 +34,7 @@ cd shaka-packager
 git submodule update --init --recursive
 INSTALL_PATH=$(pwd)
 
-CMAKE_CONFIG="-S . -B build -DBUILD_SHARED_LIBS="ON"   -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH"
+CMAKE_CONFIG="-S . -B build -DBUILD_SHARED_LIBS=ON   -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH"
 
 
 
