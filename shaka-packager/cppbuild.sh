@@ -47,9 +47,7 @@ case $PLATFORM in
         MUSL_ARCH="aarch64"
         curl -LO https://musl.cc/"$MUSL_ARCH"-linux-musl-native.tgz
         tar xf "$MUSL_ARCH"-linux-musl-native.tgz
-        export CC="$MUSL_ARCH"-linux-musl-native/bin/"$MUSL_ARCH"-linux-musl-gcc
-        export CXX="$MUSL_ARCH"-linux-musl-native/bin/"$MUSL_ARCH"-linux-musl-g++
-        cmake -S . -B build -DBUILD_SHARED_LIBS=ON -DFULLY_STATIC=OFF -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH
+        cmake -S . -B build -DBUILD_SHARED_LIBS=ON -DFULLY_STATIC=OFF -DCMAKE_C_COMPILER=$MUSL_ARCH-linux-musl-native/bin/$MUSL_ARCH-linux-musl-gcc -DCMAKE_CXX_COMPILER=$MUSL_ARCH-linux-musl-native/bin/$MUSL_ARCH-linux-musl-g++ -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH
         cmake --build build/ --config Release --parallel 
         cmake --install build/ --strip --config Release --prefix=$CURRENT_PLATFORM_PATH
         ;;
