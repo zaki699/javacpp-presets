@@ -76,44 +76,40 @@ runs:
         export CODENAME=$UBUNTU_CODENAME
 
         if [[ ! "$ARCH" == "amd64" ]]; then
-              # https://github.com/actions/runner-images/issues/675
-              $SUDO gem install apt-spy2
-              $SUDO apt-spy2 check
-              $SUDO apt-spy2 fix --commit
-              $SUDO sed -i 's/azure\.//' /etc/apt/apt-mirrors.txt /etc/apt/sources.list
-              $SUDO cat /etc/apt/apt-mirrors.txt /etc/apt/sources.list
-              $SUDO apt-get update
+          # https://github.com/actions/runner-images/issues/675
+          $SUDO gem install apt-spy2
+          $SUDO apt-spy2 check
+          $SUDO apt-spy2 fix --commit
+          $SUDO sed -i 's/azure\.//' /etc/apt/apt-mirrors.txt /etc/apt/sources.list
+          $SUDO cat /etc/apt/apt-mirrors.txt /etc/apt/sources.list
+          $SUDO apt-get update
 
-              # https://github.com/actions/runner-images/issues/4589
-              $SUDO apt-add-repository -y ppa:ondrej/php
-              $SUDO apt-get -y install ppa-purge
-              $SUDO ppa-purge -y ppa:ondrej/php
+          # https://github.com/actions/runner-images/issues/4589
+          $SUDO apt-add-repository -y ppa:ondrej/php
+          $SUDO apt-get -y install ppa-purge
+          $SUDO ppa-purge -y ppa:ondrej/php
         fi
 
         if [[ "$ARCH" == "i386" ]]; then
-              $SUDO dpkg --add-architecture $ARCH
-              TOOLCHAIN="gcc-$PREFIX g++-$PREFIX gfortran-$PREFIX"
+          $SUDO dpkg --add-architecture $ARCH
+          TOOLCHAIN="gcc-$PREFIX g++-$PREFIX gfortran-$PREFIX"
         elif [[ ! "$ARCH" == "amd64" ]]; then
-              $SUDO dpkg --add-architecture $ARCH
-              $SUDO sed -i 's/deb http/deb [arch=amd64] http/g' /etc/apt/sources.list
-              $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
-              $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME-updates main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
-              $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME-backports main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
-              $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME-security main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
-              TOOLCHAIN="gcc-$PREFIX g++-$PREFIX gfortran-$PREFIX linux-libc-dev-$ARCH-cross binutils-multiarch"
+          $SUDO dpkg --add-architecture $ARCH
+          $SUDO sed -i 's/deb http/deb [arch=amd64] http/g' /etc/apt/sources.list
+          $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
+          $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME-updates main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
+          $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME-backports main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
+          $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME-security main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
+          TOOLCHAIN="gcc-$PREFIX g++-$PREFIX gfortran-$PREFIX linux-libc-dev-$ARCH-cross binutils-multiarch"
         fi
-        
         # $SUDO echo deb [arch=amd64] http://ppa.launchpad.net/openjdk-r/ppa/ubuntu $CODENAME main | $SUDO tee -a /etc/apt/sources.list
         # $SUDO echo deb [arch=amd64] http://ppa.launchpad.net/deadsnakes/ppa/ubuntu $CODENAME main | $SUDO tee -a /etc/apt/sources.list
         # $SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EB9B1D8886F44E2A
         # $SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA6932366A755776
         $SUDO apt-get update
-
-        if [[ "$CI_DEPLOY_MODULE" != "shaka-packager" ]]; then
-          $SUDO apt-get -y install gcc-multilib g++-multilib gfortran-multilib python3 python2.7 python3-minimal python2.7-minimal rpm libasound2-dev:$ARCH freeglut3-dev:$ARCH libfontconfig-dev:$ARCH libgtk2.0-dev:$ARCH libusb-dev:$ARCH libusb-1.0-0-dev:$ARCH libffi-dev:$ARCH libbz2-dev:$ARCH zlib1g-dev:$ARCH libxcb1-dev:$ARCH libpulse-dev:$ARCH
-        fi
-        
+        $SUDO apt-get -y install gcc-multilib g++-multilib gfortran-multilib python3 python2.7 python3-minimal python2.7-minimal rpm libasound2-dev:$ARCH freeglut3-dev:$ARCH libfontconfig-dev:$ARCH libgtk2.0-dev:$ARCH libusb-dev:$ARCH libusb-1.0-0-dev:$ARCH libffi-dev:$ARCH libbz2-dev:$ARCH zlib1g-dev:$ARCH libxcb1-dev:$ARCH libpulse-dev:$ARCH
         $SUDO apt-get -y install pkg-config ninja-build ccache clang $TOOLCHAIN openjdk-8-jdk ant python2 python3-pip swig git file wget unzip tar bzip2 gzip patch autoconf-archive autogen automake cmake make libtool bison flex perl nasm ragel curl libcurl4-openssl-dev libssl-dev libffi-dev libbz2-dev zlib1g-dev rapidjson-dev libdrm-dev
+
         export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
         echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
         ln -sf $JAVA_HOME /usr/lib/jvm/default-java
@@ -136,15 +132,14 @@ runs:
         # install vulkan sdk
         echo Installing Vulkan-SDK
         if [[ "$CODENAME" == "jammy" ]]; then
-            curl -s https://packages.lunarg.com/lunarg-signing-key-pub.asc | $SUDO tee /etc/apt/trusted.gpg.d/lunarg.asc >/dev/null
-            $SUDO curl -s -o /etc/apt/sources.list.d/lunarg-vulkan-1.3.280-jammy.list https://packages.lunarg.com/vulkan/1.3.280/lunarg-vulkan-1.3.280-jammy.list
+          curl -s https://packages.lunarg.com/lunarg-signing-key-pub.asc | $SUDO tee /etc/apt/trusted.gpg.d/lunarg.asc >/dev/null
+          $SUDO curl -s -o /etc/apt/sources.list.d/lunarg-vulkan-1.3.280-jammy.list https://packages.lunarg.com/vulkan/1.3.280/lunarg-vulkan-1.3.280-jammy.list
         else
-            curl -s https://packages.lunarg.com/lunarg-signing-key-pub.asc | $SUDO apt-key add -
-            $SUDO curl -s -o /etc/apt/sources.list.d/lunarg-vulkan-1.3.280-focal.list https://packages.lunarg.com/vulkan/1.3.280/lunarg-vulkan-1.3.280-focal.list
+          curl -s https://packages.lunarg.com/lunarg-signing-key-pub.asc | $SUDO apt-key add -
+          $SUDO curl -s -o /etc/apt/sources.list.d/lunarg-vulkan-1.3.280-focal.list https://packages.lunarg.com/vulkan/1.3.280/lunarg-vulkan-1.3.280-focal.list
         fi
-        
         $SUDO apt-get update && $SUDO apt-get install -y libvulkan1 libvulkan-dev vulkan-sdk
-    
+
         if [[ -n ${USERLAND_BUILDME:-} ]]; then
           curl -LOJ https://github.com/raspberrypi/userland/archive/master.tar.gz
           tar -xzf userland-master.tar.gz
@@ -216,7 +211,6 @@ runs:
           # Remove downloaded archives and unused libraries to avoid running out of disk space
           $SUDO rm -f $(find /usr/local/cuda/ -name '*.a' -and -not -name libcudart_static.a -and -not -name libcudadevrt.a -and -not -name libnvcomp_device.a)
         fi
-      
 
         if [[ "$CI_DEPLOY_MODULE" == "nvcodec" ]]; then
           echo Installing NVIDIA Video Codec SDK
