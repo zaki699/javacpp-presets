@@ -44,7 +44,7 @@ case $PLATFORM in
         cmake --install build/ --strip --config Release --prefix=$CURRENT_PLATFORM_PATH 
         ;;
     linux-arm64)
-        cmake -S . -B build -DBUILD_SHARED_LIBS="ON"  -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH
+        cmake -S . -B build -DBUILD_SHARED_LIBS="ON"  -DTOOLCHAIN_CROSS_TRIPLET="aarch64-linux-gnu" -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH
         cmake --build build/ --config Release --parallel 
         cmake --install build/ --strip --config Release --prefix=$CURRENT_PLATFORM_PATH
         ;;
