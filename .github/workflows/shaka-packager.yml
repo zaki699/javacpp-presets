@@ -18,12 +18,12 @@ env:
   STAGING_REPOSITORY: ${{ secrets.STAGING_REPOSITORY }}
 jobs:
     linux-x86_64:
-      runs-on: ubuntu-22.04
+      runs-on: ubuntu-20.04
       container: centos:7
       steps:
         - uses: zaki699/javacpp-presets/.github/actions/deploy-centos@shaka-packager
     linux-arm64:
-      runs-on: ubuntu-22.04
+      runs-on: ubuntu-20.04
       steps:
         - uses: zaki699/javacpp-presets/.github/actions/deploy-ubuntu@shaka-packager
     macosx-x86_64:
@@ -36,7 +36,7 @@ jobs:
         - uses: zaki699/javacpp-presets/.github/actions/deploy-macosx@shaka-packager
     redeploy:
       needs: [linux-x86_64, linux-arm64, macosx-x86_64, macosx-arm64]
-      runs-on: ubuntu-22.04
+      runs-on: ubuntu-20.04
       steps:
         - uses: zaki699/javacpp-presets/.github/actions/redeploy@shaka-packager
   
