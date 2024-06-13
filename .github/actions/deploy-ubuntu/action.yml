@@ -73,7 +73,7 @@ runs:
             $SUDO dpkg --list
 
             $SUDO apt-get update
-            $SUDO apt-get -y install  curl maven gnupg build-essential cmake git ninja-build python3 python3-pip openjdk-8-jdk ant python2 python3-pip swig file wget unzip tar bzip2 gzip patch autoconf-archive autogen automake cmake libtool bison flex perl nasm
+            $SUDO apt-get -y install  ccache curl maven gnupg build-essential cmake git ninja-build python3 python3-pip openjdk-8-jdk ant python2 python3-pip swig file wget unzip tar bzip2 gzip patch autoconf-archive autogen automake cmake libtool bison flex perl nasm
 
             source /etc/os-release
             export CODENAME=$UBUNTU_CODENAME
