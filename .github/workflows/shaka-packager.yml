@@ -20,22 +20,22 @@ jobs:
     linux-x86_64:
       runs-on: ubuntu-22.04
       steps:
-        - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@shaka-packager
+        - uses: zaki699/javacpp-presets/.github/actions/deploy-ubuntu@shaka-packager
     linux-arm64:
       runs-on: ubuntu-22.04
       steps:
-        - uses: bytedeco/javacpp-presets/.github/actions/deploy-ubuntu@shaka-packager
+        - uses: zaki699/javacpp-presets/.github/actions/deploy-ubuntu@shaka-packager
     macosx-x86_64:
       runs-on: macos-12
       steps:
-        - uses: bytedeco/javacpp-presets/.github/actions/deploy-macosx@shaka-packager
+        - uses: zaki699/javacpp-presets/.github/actions/deploy-macosx@shaka-packager
     macosx-arm64:
       runs-on: macos-12
       steps:
-        - uses: bytedeco/javacpp-presets/.github/actions/deploy-macosx@shaka-packager
+        - uses: zaki699/javacpp-presets/.github/actions/deploy-macosx@shaka-packager
     redeploy:
       needs: [linux-x86_64, linux-arm64, macosx-x86_64, macosx-arm64]
       runs-on: ubuntu-22.04
       steps:
-        - uses: bytedeco/javacpp-presets/.github/actions/redeploy@shaka-packager
+        - uses: zaki699/javacpp-presets/.github/actions/redeploy@shaka-packager
   
