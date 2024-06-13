@@ -40,7 +40,7 @@ import org.bytedeco.javacpp.tools.InfoMapper;
         global = "org.bytedeco.shakapackager.global.packager",
         value = {
                 @Platform(
-                       value = {"linux", "macosx"},
+                       value = {"linux-x86_64", "linux-arm64","macosx-arm64","macosx-x86_64"},
                        define = {"NDEBUG 1","SHARED_PTR_NAMESPACE std", "UNIQUE_PTR_NAMESPACE std"},
                        compiler = "cpp17",
                        include = {
