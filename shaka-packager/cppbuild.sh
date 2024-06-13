@@ -34,7 +34,7 @@ cd shaka-packager
 git submodule update --init --recursive
 INSTALL_PATH=$(pwd)
 
-CMAKE_CONFIG="-S . -B build -DBUILD_SHARED_LIBS=ON   -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH"
+CMAKE_CONFIG="-S . -B build -DBUILD_SHARED_LIBS=ON  -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH"
 
 
 
@@ -46,12 +46,12 @@ case $PLATFORM in
         ;;
     linux-arm64)
         export PREFIX=aarch64-linux-gnu
-        CXX=$PREFIX-g++ CC=/$PREFIX-gcc $CMAKE $CMAKE_CONFIG -DCMAKE_FIND_ROOT_PATH=/usr/aarch64-linux-gnu -DSPM_CROSS_SYSTEM_PROCESSOR=aarch64 ..
+        CXX=$PREFIX-g++ CC=/$PREFIX-gcc $CMAKE $CMAKE_CONFIG -DSKIP_INTEGRATION_TESTS=ON -DCMAKE_FIND_ROOT_PATH=/usr/aarch64-linux-gnu  ..
         $CMAKE --build build/ --config Release --parallel 
         $CMAKE --install build/ --strip --config Release --prefix=$CURRENT_PLATFORM_PATH
         ;;
     macosx-arm64)
-        $CMAKE $CMAKE_CONFIG -DCMAKE_OSX_ARCHITECTURES="arm64" ..
+        $CMAKE -S . -B build -DBUILD_SHARED_LIBS="ON"  -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH
         $CMAKE --build build/ --config Release --parallel 
         $CMAKE --install build/ --strip --config Release --prefix=$CURRENT_PLATFORM_PATH
         ;;
