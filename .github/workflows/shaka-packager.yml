@@ -25,9 +25,6 @@ jobs:
       runs-on: ubuntu-20.04
       steps:
         - uses: zaki699/javacpp-presets/.github/actions/deploy-ubuntu@shaka-packager
-          with:
-            arch: aarch64
-            distro: ubuntu20.04
     macosx-x86_64:
       runs-on: macos-12
       steps:

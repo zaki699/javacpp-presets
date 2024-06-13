@@ -34,7 +34,6 @@ cd shaka-packager
 git submodule update --init --recursive
 INSTALL_PATH=$(pwd)
 
-CMAKE_CONFIG="-S . -B build -DBUILD_SHARED_LIBS=ON  -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH"
 
 
 
@@ -45,10 +44,14 @@ case $PLATFORM in
         cmake --install build/ --strip --config Release --prefix=$CURRENT_PLATFORM_PATH 
         ;;
     linux-arm64)
-        export PREFIX=aarch64-linux-gnu
-        CXX=$PREFIX-g++ CC=/$PREFIX-gcc $CMAKE $CMAKE_CONFIG -DSKIP_INTEGRATION_TESTS=ON -DCMAKE_CROSSCOMPILING=1 -DCMAKE_FIND_ROOT_PATH=/usr/aarch64-linux-gnu
-        $CMAKE --build build/ --config Release --parallel 
-        $CMAKE --install build/ --strip --config Release --prefix=$CURRENT_PLATFORM_PATH
+        MUSL_ARCH="aarch64"
+        curl -LO https://musl.cc/"$MUSL_ARCH"-linux-musl-native.tgz
+        tar xf "$MUSL_ARCH"-linux-musl-native.tgz
+        export CC="$MUSL_ARCH"-linux-musl-native/bin/"$MUSL_ARCH"-linux-musl-gcc
+        export CXX="$MUSL_ARCH"-linux-musl-native/bin/"$MUSL_ARCH"-linux-musl-g++
+        cmake -S . -B build -DBUILD_SHARED_LIBS=ON -DFULLY_STATIC=OFF -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH
+        cmake --build build/ --config Release --parallel 
+        cmake --install build/ --strip --config Release --prefix=$CURRENT_PLATFORM_PATH
         ;;
     macosx-arm64)
         cmake -S . -B build -DBUILD_SHARED_LIBS="ON"  -DCMAKE_BUILD_TYPE=Release -G Ninja  -DCMAKE_INSTALL_PREFIX=$CURRENT_PLATFORM_PATH
