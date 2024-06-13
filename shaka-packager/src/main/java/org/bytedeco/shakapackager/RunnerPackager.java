@@ -51,6 +51,6 @@
  @Properties(
      value = @Platform(executable = "packager")
  )
- public class packager {
+ public class RunnerPackager {
      static { Loader.load(); }
  }
