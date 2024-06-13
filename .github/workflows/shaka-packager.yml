@@ -20,7 +20,7 @@ jobs:
     linux-x86_64:
       runs-on: ubuntu-20.04
       steps:
-        - uses: zaki699/javacpp-presets/.github/actions/deploy-centos@shaka-packager
+        - uses: zaki699/javacpp-presets/.github/actions/deploy-ubuntu@shaka-packager
     linux-arm64:
       runs-on: ubuntu-20.04
       steps:
