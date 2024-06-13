@@ -24,6 +24,7 @@ runs:
         echo "SCL_ENABLE=$SCL_ENABLE" >> $GITHUB_ENV
         echo "SCL_INSTALL=$SCL_INSTALL" >> $GITHUB_ENV
 
+        
         yum -y update
         yum -y install centos-release-scl-rh epel-release
         if [[ "$CENTOS_VERSION" == "6" ]]; then
@@ -127,6 +128,13 @@ runs:
           ln -sf /usr/local/Video_Codec_SDK_* /usr/local/videocodecsdk
         fi
 
+        if [[ "$CI_DEPLOY_MODULE" == "shaka-packager" ]]; then
+          dnf update -y
+          dnf install -y yum-utils
+          dnf config-manager --set-enabled crb
+          yum install -y ninja-build python3 which libatomic
+        fi
+
         if [[ "$CI_DEPLOY_MODULE" == "tensorrt" ]]; then
           echo Installing TensorRT
           python3 -m gdown.cli https://drive.google.com/uc?id=1dVhD-DEYY42QbZe1GXl-vxe3k6KqWGsL
@@ -190,6 +198,7 @@ runs:
         source scl_source enable $SCL_ENABLE || true
         git --version
         gcc --version
+        ninja --version
         cmake --version
         gradle --version
         mvn -version
