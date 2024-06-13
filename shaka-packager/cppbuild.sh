@@ -22,7 +22,7 @@ cd $PLATFORM
 CURRENT_PLATFORM_PATH=$(pwd)
 
 
-echo "Cloning reposository..."
+echo "Cloning shaka-packager reposository..."
 
 if [[ ! -d shaka-packager ]]; then
     git clone --recurse-submodules https://github.com/shaka-project/shaka-packager.git
