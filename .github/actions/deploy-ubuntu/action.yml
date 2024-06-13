@@ -313,7 +313,11 @@ runs:
       shell: bash
       run: |
         git --version
-        $PREFIX-gcc --version
+
+        if [[ "$CI_DEPLOY_MODULE" != "shaka-packager" ]]; then
+          $PREFIX-gcc --version
+        fi
+        
         cmake --version
         gradle --version
         mvn -version
