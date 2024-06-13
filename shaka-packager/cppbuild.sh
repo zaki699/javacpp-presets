@@ -24,6 +24,7 @@ CURRENT_PLATFORM_PATH=$(pwd)
 
 echo "Cloning shaka-packager reposository..."
 
+# No sure it works well
 if [[ ! -d shaka-packager ]]; then
     git clone --recurse-submodules https://github.com/shaka-project/shaka-packager.git
 
