@@ -130,8 +130,7 @@ runs:
 
         if [[ "$CI_DEPLOY_MODULE" == "shaka-packager" ]]; then
           yum install -y dnf
-          dnf update -y
-          dnf install -y yum-utils
+          dnf install -y dnf-plugins-core
           dnf config-manager --set-enabled crb
           yum install -y ninja-build python3 which libatomic
         fi
