@@ -25,7 +25,7 @@ CURRENT_PLATFORM_PATH=$(pwd)
 
 echo "Cloning shaka-packager reposository..."
 
-# Master branch shaka-packager
+# Master branch shaka-packager v3.2.0
 if [[ ! -d shaka-packager ]]; then
     git clone --recurse-submodules https://github.com/shaka-project/shaka-packager.git
 
