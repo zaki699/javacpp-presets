@@ -40,7 +40,7 @@ import org.bytedeco.javacpp.tools.InfoMapper;
         global = "org.bytedeco.shakapackager.global.packager",
         value = {
                 @Platform(
-                       value = {"linux", "macosx"},
+                       value = {"macosx"},
                        define = {"NDEBUG 1","SHARED_PTR_NAMESPACE std", "UNIQUE_PTR_NAMESPACE std"},
                        compiler = "cpp17",
                        include = {
@@ -59,6 +59,28 @@ import org.bytedeco.javacpp.tools.InfoMapper;
                        },
                        
                        link  = "packager"
+
+                ),
+                @Platform(
+                       value = {"linux"},
+                       define = {"NDEBUG 1","SHARED_PTR_NAMESPACE std", "UNIQUE_PTR_NAMESPACE std"},
+                       compiler = "cpp17",
+                       include = {
+                                "packager/status.h",
+                                "packager/mpd_params.h",
+                                "packager/mp4_output_params.h",
+                                "packager/hls_params.h",
+                                "packager/file.h",
+                                "packager/macros/classes.h",
+                                "packager/export.h",
+                                "packager/chunking_params.h",
+                                "packager/buffer_callback_params.h",
+                                "packager/crypto_params.h",
+                                "packager/ad_cue_generator_params.h",
+                                "packager/packager.h"
+                       },
+                       
+                       link  = "libpackager"
 
                 )
         })
