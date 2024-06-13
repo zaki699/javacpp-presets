@@ -68,25 +68,14 @@ runs:
         echo "ARCH=$ARCH" >> $GITHUB_ENV
         echo "PREFIX=$PREFIX" >> $GITHUB_ENV
 
-        if [[ "$CI_DEPLOY_MODULE" == "shaka-packager" ]]; then
+        $SUDO dpkg --list
 
-            $SUDO dpkg --list
+        $SUDO apt-get update
+        $SUDO apt-get -y install gnupg
+        source /etc/os-release
+        export CODENAME=$UBUNTU_CODENAME
 
-            $SUDO apt-get update
-            $SUDO apt-get -y install  ccache curl maven gnupg build-essential cmake git ninja-build python3 python3-pip openjdk-8-jdk ant python2 python3-pip swig file wget unzip tar bzip2 gzip patch autoconf-archive autogen automake cmake libtool bison flex perl nasm
-
-            source /etc/os-release
-            export CODENAME=$UBUNTU_CODENAME
-
-            $SUDO dpkg --list
-
-            $SUDO apt-get update
-            $SUDO apt-get -y install gnupg
-            source /etc/os-release
-            export CODENAME=$UBUNTU_CODENAME
-        else
-
-            if [[ ! "$ARCH" == "amd64" ]]; then
+        if [[ ! "$ARCH" == "amd64" ]]; then
               # https://github.com/actions/runner-images/issues/675
               $SUDO gem install apt-spy2
               $SUDO apt-spy2 check
@@ -99,12 +88,12 @@ runs:
               $SUDO apt-add-repository -y ppa:ondrej/php
               $SUDO apt-get -y install ppa-purge
               $SUDO ppa-purge -y ppa:ondrej/php
-            fi
+        fi
 
-            if [[ "$ARCH" == "i386" ]]; then
+        if [[ "$ARCH" == "i386" ]]; then
               $SUDO dpkg --add-architecture $ARCH
               TOOLCHAIN="gcc-$PREFIX g++-$PREFIX gfortran-$PREFIX"
-            elif [[ ! "$ARCH" == "amd64" ]]; then
+        elif [[ ! "$ARCH" == "amd64" ]]; then
               $SUDO dpkg --add-architecture $ARCH
               $SUDO sed -i 's/deb http/deb [arch=amd64] http/g' /etc/apt/sources.list
               $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
@@ -112,14 +101,14 @@ runs:
               $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME-backports main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
               $SUDO echo deb [arch=$ARCH] http://ports.ubuntu.com/ubuntu-ports $CODENAME-security main restricted universe multiverse | $SUDO tee -a /etc/apt/sources.list
               TOOLCHAIN="gcc-$PREFIX g++-$PREFIX gfortran-$PREFIX linux-libc-dev-$ARCH-cross binutils-multiarch"
-            fi
+        fi
             # $SUDO echo deb [arch=amd64] http://ppa.launchpad.net/openjdk-r/ppa/ubuntu $CODENAME main | $SUDO tee -a /etc/apt/sources.list
             # $SUDO echo deb [arch=amd64] http://ppa.launchpad.net/deadsnakes/ppa/ubuntu $CODENAME main | $SUDO tee -a /etc/apt/sources.list
             # $SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EB9B1D8886F44E2A
             # $SUDO apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA6932366A755776
             $SUDO apt-get update
             $SUDO apt-get -y install gcc-multilib g++-multilib gfortran-multilib python3 python2.7 python3-minimal python2.7-minimal rpm libasound2-dev:$ARCH freeglut3-dev:$ARCH libfontconfig-dev:$ARCH libgtk2.0-dev:$ARCH libusb-dev:$ARCH libusb-1.0-0-dev:$ARCH libffi-dev:$ARCH libbz2-dev:$ARCH zlib1g-dev:$ARCH libxcb1-dev:$ARCH libpulse-dev:$ARCH
-            $SUDO apt-get -y install pkg-config ccache clang $TOOLCHAIN openjdk-8-jdk ant python2 python3-pip swig git file wget unzip tar bzip2 gzip patch autoconf-archive autogen automake cmake make libtool bison flex perl nasm ragel curl libcurl4-openssl-dev libssl-dev libffi-dev libbz2-dev zlib1g-dev rapidjson-dev libdrm-dev
+            $SUDO apt-get -y install pkg-config ccache ninja-build clang $TOOLCHAIN openjdk-8-jdk ant python2 python3-pip swig git file wget unzip tar bzip2 gzip patch autoconf-archive autogen automake cmake make libtool bison flex perl nasm ragel curl libcurl4-openssl-dev libssl-dev libffi-dev libbz2-dev zlib1g-dev rapidjson-dev libdrm-dev
 
         fi
 
@@ -313,11 +302,7 @@ runs:
       shell: bash
       run: |
         git --version
-
-        if [[ "$CI_DEPLOY_MODULE" != "shaka-packager" ]]; then
-          $PREFIX-gcc --version
-        fi
-        
+        $PREFIX-gcc --version
         cmake --version
         gradle --version
         mvn -version
