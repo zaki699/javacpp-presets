@@ -129,10 +129,7 @@ runs:
         fi
 
         if [[ "$CI_DEPLOY_MODULE" == "shaka-packager" ]]; then
-          yum install -y dnf
-          dnf install -y dnf-plugins-core
-          dnf config-manager --set-enabled crb
-          yum install -y ninja-build python3 which libatomic
+          yum install -y ninja-build python3 
         fi
 
         if [[ "$CI_DEPLOY_MODULE" == "tensorrt" ]]; then
