@@ -7,7 +7,7 @@ if [[ -z "$PLATFORM" ]]; then
     exit
 fi
 
-# Planned to support windows asap
+# Planned to support windows
 if [[ $PLATFORM == windows* ]]; then
     #No Windows support yet
     echo "Error: Platform \"$PLATFORM\" is not supported"
